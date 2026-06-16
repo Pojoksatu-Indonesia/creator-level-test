@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Verify Certificate</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.box {
+  background: #1e293b;
+  padding: 25px;
+  border-radius: 12px;
+  width: 360px;
+  text-align: center;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  margin-top: 10px;
+}
+
+button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #22c55e;
+  color: white;
+  cursor: pointer;
+}
+
+.result {
+  margin-top: 15px;
+  text-align: left;
+  background: #0b1220;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.valid { color: #22c55e; font-weight: bold; }
+.invalid { color: #ef4444; font-weight: bold; }
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Verify Certificate</h2>
+
+  <input id="certInput" placeholder="Masukkan Certificate ID">
+  <button onclick="verify()">Cek Sertifikat</button>
+
+  <div id="result" class="result" style="display:none;"></div>
+</div>
+
+<script>
+
+const API = "https://script.google.com/macros/s/AKfycbyGu-dsTMLGpb1lZY3TJDCAE8qwAKOlUMbMMJU9Gja0iNhiuPoYkONfVxOuHBxZa7Zb/exec";
+
+async function verify() {
+  const cert = document.getElementById("certInput").value.trim();
+  const res = await fetch(`${API}?cert=${cert}`);
+  const data = await res.json();
+
+  const box = document.getElementById("result");
+  box.style.display = "block";
+
+  if (data.status === "valid") {
+    box.innerHTML = `
+      <div class="valid">✅ CERTIFICATE VALID</div>
+      <p><b>Name:</b> ${data.data.name}</p>
+      <p><b>Email:</b> ${data.data.email}</p>
+      <p><b>Score:</b> ${data.data.score}</p>
+      <p><b>Level:</b> ${data.data.level}</p>
+      <p><b>ID:</b> ${data.data.certNo}</p>
+    `;
+  } else {
+    box.innerHTML = `<div class="invalid">❌ CERTIFICATE NOT FOUND</div>`;
+  }
+}
+
+</script>
+
+</body>
+</html>

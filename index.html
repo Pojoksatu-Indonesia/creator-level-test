@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<!-- PRECONNECT GOOGLE FONT -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- POPPINS -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Creator Level Test</title>
+
+<link rel="stylesheet" href="style.css">
+
+<!-- LIBRARY WAJIB PDF -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="logo_kontenova">
+    <img src="assets/logo-kontenova1.png" alt="Kontenova Logo">
+  </div>
+</header>
+
+<!-- POPUP -->
+<div id="popup" class="popup hidden">
+  <div class="popup-content">
+    <h2 id="popupTitle"></h2>
+    <p id="popupMessage"></p>
+    <button id="popupButton"></button>
+  </div>
+</div>
+
+<!-- MAIN CONTAINER -->
+<div class="container">
+
+  <!-- START SCREEN -->
+  <div id="start-screen">
+
+  <div class="hero-badge">
+    🚀 GRATIS • CERTIFICATE INCLUDED
+  </div>
+
+  <h1 class="hero-title">
+    Creator Level Test
+  </h1>
+
+  <p class="hero-subtitle">
+    Ukur kemampuan Content Creator Anda melalui tantangan interaktif,
+    dapatkan skor, level profesional, dan sertifikat digital otomatis.
+  </p>
+
+  <div class="hero-stats">
+
+    <div class="stat-card">
+      <strong>40</strong>
+      <span>Pertanyaan</span>
+    </div>
+
+    <div class="stat-card">
+      <strong>4</strong>
+      <span>Level</span>
+    </div>
+
+    <div class="stat-card">
+      <strong>100%</strong>
+      <span>Gratis</span>
+    </div>
+
+  </div>
+
+  <button id="startBtn" class="start-main-btn">
+    ▶ Mulai Tes Sekarang
+  </button>
+
+  <div class="benefits">
+
+  <div class="benefit-card">
+    <div class="benefit-icon">🧠</div>
+    <h3>Uji Skill</h3>
+    <p>Ketahui sejauh mana kemampuan content creator Anda.</p>
+  </div>
+
+  <div class="benefit-card">
+    <div class="benefit-icon">🏆</div>
+    <h3>Sertifikat</h3>
+    <p>Dapatkan sertifikat digital setelah menyelesaikan tes.</p>
+  </div>
+
+  <div class="benefit-card">
+    <div class="benefit-icon">📈</div>
+    <h3>Naik Level</h3>
+    <p>Mulai dari Beginner hingga Expert Creator.</p>
+  </div>
+
+  <div class="benefit-card">
+    <div class="benefit-icon">⚡</div>
+    <h3>Hasil Instan</h3>
+    <p>Lihat skor, level, dan analisis kemampuan Anda secara otomatis.</p>
+  </div>
+
+</div>
+
+  <div class="level-preview">
+
+    <div class="level-card">🌱 Beginner</div>
+
+    <div class="level-card">⚡ Intermediate</div>
+
+    <div class="level-card">🚀 Advanced</div>
+
+    <div class="level-card">👑 Expert</div>
+
+  </div>
+
+  <div class="social-proof">
+    ⭐⭐⭐⭐⭐
+    <br>
+    Ratusan Content Creator sudah mengukur kemampuan mereka bersama Kontenova.id
+  </div>
+
+</div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="hidden">
+
+    <div class="progress">
+      <div id="progressBar"></div>
+    </div>
+
+    <p id="questionNumber"></p>
+    <h2 id="question"></h2>
+    <div id="options"></div>
+
+  </div>
+
+  <!-- LEAD FORM -->
+  <div id="lead-form" class="hidden">
+
+  <h2>Dapatkan Hasil Kamu</h2>
+
+  <p>
+    Isi data di bawah untuk melihat skor, level,
+    dan mendapatkan sertifikat digital.
+  </p>
+
+  <div class="lead-card">
+
+    <input
+      type="text"
+      id="leadName"
+      class="lead-input"
+      placeholder="Nama Lengkap"
+    >
+
+    <input
+      type="email"
+      id="leadEmail"
+      class="lead-input"
+      placeholder="Email Aktif"
+    >
+
+    <input
+      type="text"
+      id="leadWA"
+      class="lead-input"
+      placeholder="Nomor WhatsApp"
+    >
+
+    <button id="seeResultBtn">
+      Lihat Hasil Saya
+    </button>
+
+  </div>
+
+</div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="hidden">
+
+  <div class="result-badge">
+    TEST COMPLETED
+  </div>
+
+  <h1 class="result-title">
+    Hasil Akhir Anda
+  </h1>
+
+  <p class="result-subtitle">
+    Berikut hasil evaluasi kemampuan Content Creator Anda.
+  </p>
+
+  <div class="score-circle">
+    <div id="final-score">0</div>
+    <span>POINTS</span>
+  </div>
+
+  <div class="result-level-box">
+    <h2 id="creator-level"></h2>
+    <p id="level-description"></p>
+  </div>
+
+  <div class="result-stats">
+
+    <div class="result-stat">
+      <strong id="accuracyStat">0%</strong>
+      <span>Akurasi</span>
+    </div>
+
+    <div class="result-stat">
+      <strong>40</strong>
+      <span>Terselesaikan</span>
+    </div>
+
+  </div>
+
+  <div class="achievement-box">
+    🏆 Selamat! Anda telah menyelesaikan Creator Level Test dan berhak mendapatkan sertifikat digital resmi.
+  </div>
+
+  <div class="result-buttons">
+
+    <button id="showCertBtn">
+      🎓 Dapatkan Sertifikat
+    </button>
+
+    <button id="restartBtn">
+      🔄 Uji Lagi
+    </button>
+
+  </div>
+
+</div>
+
+  <!-- CERTIFICATE -->
+<!-- CERTIFICATE -->
+<div id="certificate" class="cert-container">
+
+  <div class="cert-border">
+
+    <div class="cert-top">
+      <div class="cert-logo">
+        <img src="assets/logo-kontenova.png" alt="Kontenova">
+      </div>
+
+      <div class="cert-header">
+        <h1>CERTIFICATE OF<br>ACHIEVEMENT</h1>
+        <p>Creator Level Assessment</p>
+      </div>
+    </div>
+
+    <div class="cert-body">
+      <p class="cert-small">This certificate is proudly presented to</p>
+
+      <h2 id="certName" class="cert-name">NAME</h2>
+
+      <div class="cert-line"></div>
+
+      <p class="cert-text">
+        for successfully completing Creator Level Test
+      </p>
+
+      <div class="cert-box">
+        <div>
+          <span>Score</span>
+          <p id="certScore">0</p>
+        </div>
+
+        <div>
+          <span>Level</span>
+          <p id="certLevel">Expert</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cert-footer">
+      <div class="cert-id">
+        <small>Certificate ID</small>
+        <p id="certNumber">CC2026-000000</p>
+
+        <small class="cert-date-label">Issued Date</small>
+        <p id="certDate">Rabu, 16 Juni 2026</p>
+      </div>
+
+      <div class="cert-qr">
+        <div id="qrcode"></div>
+        <small>Scan to Verify</small>
+      </div>
+    </div>
+
+  </div>
+
+  <button id="downloadCertBtn" class="cert-btn">
+    Download Certificate
+  </button>
+
+</div>
+
+<!-- DATA + SCRIPT -->
+<script src="data/questions.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html> 
