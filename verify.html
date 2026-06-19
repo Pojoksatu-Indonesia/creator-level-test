@@ -1,97 +1,255 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Verify Certificate</title>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial;
-  background: #0f172a;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, #7c3aed 0, transparent 28%),
+    radial-gradient(circle at bottom right, #22c55e 0, transparent 25%),
+    #0f172a;
   color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  padding: 24px;
 }
 
 .box {
-  background: #1e293b;
-  padding: 25px;
-  border-radius: 12px;
-  width: 360px;
+  width: 100%;
+  max-width: 430px;
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 25px 80px rgba(0,0,0,0.45);
+  backdrop-filter: blur(14px);
+  padding: 32px;
+  border-radius: 24px;
   text-align: center;
+}
+
+.badge {
+  display: inline-block;
+  background: rgba(34, 197, 94, 0.12);
+  color: #86efac;
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 14px;
+}
+
+h2 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.subtitle {
+  color: #cbd5e1;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 12px 0 24px;
+}
+
+.input-wrap {
+  text-align: left;
+}
+
+label {
+  font-size: 13px;
+  color: #e2e8f0;
+  font-weight: bold;
 }
 
 input {
   width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  margin-top: 10px;
+  padding: 14px 15px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.14);
+  margin-top: 8px;
+  background: #020617;
+  color: white;
+  outline: none;
+  font-size: 15px;
+}
+
+input:focus {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 4px rgba(34,197,94,0.12);
 }
 
 button {
   width: 100%;
-  margin-top: 10px;
-  padding: 10px;
+  margin-top: 14px;
+  padding: 14px;
   border: none;
-  border-radius: 8px;
-  background: #22c55e;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
   color: white;
   cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .result {
-  margin-top: 15px;
+  margin-top: 20px;
   text-align: left;
-  background: #0b1220;
-  padding: 15px;
-  border-radius: 10px;
+  background: #020617;
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
-.valid { color: #22c55e; font-weight: bold; }
-.invalid { color: #ef4444; font-weight: bold; }
+.valid-title {
+  color: #86efac;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.invalid-title {
+  color: #fca5a5;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-size: 14px;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.row span:first-child {
+  color: #94a3b8;
+}
+
+.row span:last-child {
+  text-align: right;
+  font-weight: bold;
+  color: #f8fafc;
+}
+
+.note {
+  margin-top: 16px;
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.5;
+}
 </style>
 </head>
 
 <body>
 
 <div class="box">
+  <div class="badge">Official Verification</div>
   <h2>Verify Certificate</h2>
+  <p class="subtitle">
+    Masukkan Certificate ID untuk memastikan sertifikat ini valid dan tercatat di database resmi.
+  </p>
 
-  <input id="certInput" placeholder="Masukkan Certificate ID">
-  <button onclick="verify()">Cek Sertifikat</button>
+  <div class="input-wrap">
+    <label>Certificate ID</label>
+    <input id="certInput" placeholder="Contoh: CC2026-000001" />
+  </div>
+
+  <button id="verifyBtn" onclick="verify()">Cek Sertifikat</button>
 
   <div id="result" class="result" style="display:none;"></div>
+
+  <div class="note">
+    Pastikan ID sertifikat sesuai dengan yang tertera pada dokumen.
+  </div>
 </div>
 
 <script>
-
 const API = "https://script.google.com/macros/s/AKfycbyGu-dsTMLGpb1lZY3TJDCAE8qwAKOlUMbMMJU9Gja0iNhiuPoYkONfVxOuHBxZa7Zb/exec";
 
 async function verify() {
-  const cert = document.getElementById("certInput").value.trim();
-  const res = await fetch(`${API}?cert=${cert}`);
-  const data = await res.json();
-
+  const input = document.getElementById("certInput");
+  const button = document.getElementById("verifyBtn");
   const box = document.getElementById("result");
+  const cert = input.value.trim();
+
   box.style.display = "block";
 
-  if (data.status === "valid") {
-    box.innerHTML = `
-      <div class="valid">✅ CERTIFICATE VALID</div>
-      <p><b>Name:</b> ${data.data.name}</p>
-      <p><b>Email:</b> ${data.data.email}</p>
-      <p><b>Score:</b> ${data.data.score}</p>
-      <p><b>Level:</b> ${data.data.level}</p>
-      <p><b>ID:</b> ${data.data.certNo}</p>
-    `;
-  } else {
-    box.innerHTML = `<div class="invalid">❌ CERTIFICATE NOT FOUND</div>`;
+  if (!cert) {
+    box.innerHTML = `<div class="invalid-title">Certificate ID wajib diisi.</div>`;
+    return;
   }
-}
 
+  button.disabled = true;
+  button.innerText = "Mengecek...";
+
+  try {
+    const res = await fetch(`${API}?cert=${encodeURIComponent(cert)}`);
+    const data = await res.json();
+
+    if (data.status === "valid") {
+      box.innerHTML = `
+        <div class="valid-title">Certificate Valid</div>
+
+        <div class="row">
+          <span>Name</span>
+          <span>${data.data.name}</span>
+        </div>
+
+        <div class="row">
+          <span>Email</span>
+          <span>${data.data.email}</span>
+        </div>
+
+        <div class="row">
+          <span>Score</span>
+          <span>${data.data.score}</span>
+        </div>
+
+        <div class="row">
+          <span>Level</span>
+          <span>${data.data.level}</span>
+        </div>
+
+        <div class="row">
+          <span>Certificate ID</span>
+          <span>${data.data.certNo}</span>
+        </div>
+      `;
+    } else {
+      box.innerHTML = `<div class="invalid-title">Certificate Not Found</div>`;
+    }
+  } catch (error) {
+    box.innerHTML = `<div class="invalid-title">Gagal mengecek sertifikat. Coba lagi.</div>`;
+  }
+
+  button.disabled = false;
+  button.innerText = "Cek Sertifikat";
+}
 </script>
 
 </body>
